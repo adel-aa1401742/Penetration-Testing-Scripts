@@ -1,0 +1,23 @@
+#!/bin/bash
+echo ~~Enabling monitor mode \"./Demo-1-Wireless-Cracking/EnablingMonitorMode\"
+./Demo-1-Wireless-Cracking/EnablingMonitorMode
+read -p "~~>Enter wireless interface name in monitor mode, press enter to continue with 'wlan0': " interfaceName
+ if [[ $interfaceName ]]
+then
+      interfaceName = $interfaceName
+else
+      interfaceName="wlan0"
+fi
+echo ~~Scanning for networks \"airodump-ng $interfaceName\"
+airodump-ng $interfaceName
+echo ~~Enter the target network information:
+read -p "	Channel: " CH
+read -p "	BSSID: " BSSID
+read -p "5-Name your output file: " fileName
+echo ~~Scanning the targeted networks \"airodump-ng --channel $CH --bssid $BSSID --write $fileName $interfaceName\"
+airodump-ng --channel $CH --bssid $BSSID --write $fileName $interfaceName
+echo $fileName saved
+
+
+
+

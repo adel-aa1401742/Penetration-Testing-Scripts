@@ -1,0 +1,163 @@
+#!/bin/bash
+
+MainMenu()
+{
+clear
+echo ~~List of Demos: 
+echo "	1-Wireless Cracking Attacks"
+echo "	2-MITM Attacks"
+echo "	3-Server-side Attacks"
+echo "	4-Client-side Attacks"
+echo "	5-Social Engineering Attacks"
+echo "	0-Exit"
+read -p "~~Demos> " demoNumber
+
+  case $demoNumber in
+    1)
+	WirelessCrackingAttacks
+        ;;
+    2)		
+	MITMAttacks
+	;;		
+    3)
+	ServerSideAttacks
+	;;
+    4)
+        ClientSideAttacks
+        ;;
+5)
+        SocialEngineeringAttacks
+        ;;
+    *)
+        clear
+	MainMenu
+        ;; 	
+    esac
+
+}
+
+
+WirelessCrackingAttacks(){
+echo ~~List of Wireless Cracking Attacks: 
+	echo "	1-Packet Sniffing"
+	echo "	2-WPA Cracking"
+	echo "	3-WPS Cracking"
+	echo "	0-Go back"
+	read -p "~~Demos(Wireless Cracking Attacks)> " attackNumber
+		case $attackNumber in
+		    1)
+			./Demo-1-Wireless-Cracking/PacketSniffing
+			;;
+		    2)		
+			./Demo-1-Wireless-Cracking/WPACracking-1-Packet-Sniffing
+			;;
+		    3)
+			./Demo-1-Wireless-Cracking/WPSCracking
+			;;
+			0) 
+					MainMenu
+					;;
+		    esac
+}
+MITMAttacks(){
+
+echo ~~List of MITM Attacks: 
+	echo "	1-ARP Spoofing with SSLStrip"
+	echo "	2-DNS Spoofing"
+	echo "	3-MITMf Plugins (ScreenShotter,Inject,JSKeylogger)"
+	echo "	4-Session Hijacking"
+	echo "	0-Go back"
+	read -p "~~Demos(MITM Attacks)> " attackNumber
+		case $attackNumber in
+				    1)
+					./Demo-2-MITM-Attacks/ARPSpoof_SSLstrip
+					;;
+				    2)		
+					./Demo-2-MITM-Attacks/DNSSpoofing
+					;;
+				    3)
+					./Demo-2-MITM-Attacks/MiTMF-Plugins
+					;;
+				    4)
+					./Demo-2-MITM-Attacks/SessionHijacking
+					;;
+				    0) 
+					MainMenu
+					;;
+				    esac
+}
+ServerSideAttacks(){
+
+echo ~~List of Server-side Attacks: 
+	echo "	1-Vsftpd"
+	echo "	2-Samba smbd"
+	echo "	0-Go back"
+	read -p "~~Demo(Server-side Attacks)>: " attackNumber
+        		case $attackNumber in
+				    1)
+					./Demo-3-Server-Side-Attacks/vsftpd
+					;;
+				    2)		
+					./Demo-3-Server-Side-Attacks/samba
+					;;
+				    0) 
+					MainMenu
+					;;
+				    esac
+}
+
+ClientSideAttacks(){
+
+echo ~~List of Client-side Attacks: 
+	echo "	1-Veil Backdoor (rev_tcp)"
+	echo "	2-Empire Backdoor"
+	echo "	3-Fake Updates"
+	echo "	4-Backdooring Any Download"
+	echo "	5-Backdooring Any File"
+	echo "	6-BeEF Browsers Hooking "
+	echo "	0-Go back"
+	read -p "~~Demo(Client-side Attacks)>: " attackNumber
+        		case $attackNumber in
+				    1)
+					./Demo-4-Client-Side-Attacks/rev_tcp_generator
+					;;
+				    2)		
+					
+					;;
+					3)
+					./Demo-4-Client-Side-Attacks/fake_updates-1
+					;;
+					4)
+					./Demo-4-Client-Side-Attacks/bdfproxy-1
+					;;
+					5)
+					./Demo-4-Client-Side-Attacks/backdooring_any_file
+					;;
+					6)
+					./Demo-4-Client-Side-Attacks/beef_browsers_hooking
+					
+					;;
+				    0) 
+					MainMenu
+					;;
+				    esac
+}
+SocialEngineeringAttacks(){
+
+echo ~~List of Social Engineering Attacks: 
+	echo "	1-Email Spoofing"
+	echo "	0-Go back"
+	read -p "~~Demo(Social Engineering Attacks)>: " attackNumber
+        		case $attackNumber in
+				    1)
+					./Demo-5-Social-Engineering-Attacks/Email_spoofing
+					;;
+				  
+				    0) 
+					MainMenu
+					;;
+				    esac
+}
+
+MainMenu
+

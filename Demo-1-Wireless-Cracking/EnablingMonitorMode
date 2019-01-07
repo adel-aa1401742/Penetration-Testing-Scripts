@@ -1,0 +1,28 @@
+#!/bin/bash
+echo "Script Description: This script be used to manually switch to the monitor mode of the network interface, which will alows us to capture all the packets being transfered arround us."
+echo ~~Listing wireless interfaces \"iwconfig\"
+iwconfig
+read -p "~~Enter wireless interface name, press enter to continue with wlan0: " interfaceName
+ if [[ $interfaceName ]]
+then
+      interfaceName = $interfaceName
+else
+      interfaceName="wlan0"
+fi
+echo $interfaceName selected
+echo ~~Disabling the wireless interface \"ifconfig $interfaceName down\"
+ifconfig $interfaceName down
+echo Finished
+echo ~~Killing all procceses that may cause problems \"airmon-ng check kill\"
+airmon-ng check kill
+echo Finished
+echo ~~Starting monitor mode \"iwconfig $interfaceName mode monitor\"
+iwconfig $interfaceName mode monitor
+echo Finished
+echo ~~Enabling the wireless interface \"ifconfig $interfaceName up\"
+ifconfig $interfaceName up
+echo Finished
+echo ~~Checking interface name in monitor mode \"iwconfig\"
+iwconfig
+
+

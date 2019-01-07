@@ -1,0 +1,19 @@
+#!/bin/bash
+echo "Script Description: This script will use "airmon-ng" to switch to the monitor mode of the network interface, which will alows us to capture all the packets being transfered arround us."
+echo ~~Listing wireless interfaces \"iwconfig\"
+iwconfig
+read -p "~~>Enter wireless interface name: " interfaceName
+echo $interfaceName selected
+echo ~~Disabling the wireless interface \"ifconfig $interfaceName down\"
+ifconfig $interfaceName down
+echo Finished
+echo ~~Killing all procceses that may cause problems \"airmon-ng check kill\"
+airmon-ng check kill
+echo Finished
+echo ~~Starting monitor mode \"airmon-ng start $interfaceName\"
+airmon-ng start $interfaceName
+echo Finished
+echo ~~Checking interface name in monitor mode \"iwconfig\"
+iwconfig
+
+

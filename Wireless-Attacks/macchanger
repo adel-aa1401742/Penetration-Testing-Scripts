@@ -1,0 +1,19 @@
+#!/bin/bash
+echo "Script description: This script shows how to use 'macchanger' to show and change the MAC address of any netwrok interface."
+echo 1-Listing wireless interfaces \"iwconfig\"
+iwconfig
+read -p "2-Enter wireless interface name: " interfaceName
+echo $interfaceName selected
+echo 3-Disabling network card \"ifconfig $interfaceName down\"
+ifconfig $interfaceName down
+echo $interfaceName disabled
+echo 4-Displaying macchanger options \"macchanger --help\"
+macchanger --help
+echo 5-Showing the current MAC Address \"macchanger -s $interfaceName\"
+macchanger -s $interfaceName
+echo 6-Changing the MAC Address randomly \"macchanger -r $interfaceName\"
+macchanger -r $interfaceName
+echo 7-Enabeling network card \"ifconfig $interfaceName up\"
+ifconfig $interfaceName up
+echo 8-Showing the MAC addresses \"ip addr\"
+ip addr
