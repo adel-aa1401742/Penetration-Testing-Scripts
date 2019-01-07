@@ -8,6 +8,6 @@ read -p "	2-Receiver email: " to
 read -p "	3-Email subject: " subject
 read -p "	4-Email header: " header
 read -p "	5-Email message: " message
-#read -p "	6-Sendgrid API Key: " key
-sendemail -s smtp.sendgrid.net:587 -xu apikey -xp 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 -f "$from" -t "$to" -u "$subject" -m "$message" -o message-header="$header"
+read -p "	6-Sendgrid API Key: " key
+sendemail -s smtp.sendgrid.net:587 -xu apikey -xp "$key" -f "$from" -t "$to" -u "$subject" -m "$message" -o message-header="$header"
 
